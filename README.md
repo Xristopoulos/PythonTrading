@@ -1,5 +1,5 @@
 # PythonTrading
-This is a trading tool, made it python. It uses AI and a data driven approach to enter and exit trades.
+This is a Python-based trading tool I developed that leverages AI and a data-driven approach to make informed decisions on when to enter and exit trades. By using advanced algorithms and machine learning techniques, the tool analyzes market data to optimize trading strategies, aiming to make smarter and more profitable trades.
 
 
 Trading Strategies Using Downloaded Candles
