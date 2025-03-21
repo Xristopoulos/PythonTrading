@@ -1,9 +1,8 @@
-import ccxt
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from datetime import datetime, timedelta
-import os
+
 
 # Binance Trading Fees & Arbitrary Slippage
 BINANCE_FEE = 0.001  # 0.1% per trade
@@ -20,7 +19,6 @@ def add_indicators(df):
     high = df['high'].values
     low = df['low'].values
 
-    # 1) Existing Indicators: RSI, MACD, Stoch
     delta = np.diff(close, prepend=close[0])
     gain = np.where(delta > 0, delta, 0)
     loss = np.where(delta < 0, -delta, 0)
@@ -47,13 +45,13 @@ def add_indicators(df):
     df['stoch_k'] = stoch_k
     df['stoch_d'] = stoch_d
 
-    # 2) Bollinger Bands (20 period, ±2 std)
+    #  Bollinger Bands (20 period, ±2 std)
     df['bb_middle'] = pd.Series(close).rolling(window=20).mean()
     df['bb_std'] = pd.Series(close).rolling(window=20).std()
     df['bb_upper'] = df['bb_middle'] + 2 * df['bb_std']
     df['bb_lower'] = df['bb_middle'] - 2 * df['bb_std']
 
-    # 3) ATR & ADX for Trend Strength
+    #  ATR & ADX for Trend Strength
     df['tr'] = np.maximum(
         df['high'] - df['low'],
         np.maximum(
@@ -239,9 +237,9 @@ def backtest(df):
                         f"Allocated={allocated:.2f}, TP={tp_level:.2f}\n"
                     )
 
-        # End of main loop
 
-    # Final balances and performance metrics are printed below...
+
+    # Final balances and performance metrics are printed below
     final_cash_balance = cash_balance
     if in_position:
         final_position_value = position_size * df['close'].iloc[-1]

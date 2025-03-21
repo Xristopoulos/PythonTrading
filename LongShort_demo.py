@@ -10,7 +10,7 @@ class PositionType(Enum):
     SHORT = "short"
 
 
-# **Original Indicator Functions**
+# **Indicator Functions**
 def compute_rsi(series, period=14):
     delta = np.diff(series, prepend=series[0])
     gain = np.where(delta > 0, delta, 0)
@@ -59,7 +59,7 @@ def calculate_liquidation_price(entry_price, leverage, position_type=PositionTyp
         return entry_price * (1 + (1 / leverage))
 
 
-# **Extracted Trade Logic Functions**
+# **Trade Logic Functions**
 def should_enter_trade(df, i, position_type, params):
     price = df['close'].iloc[i]
     if position_type == PositionType.LONG:
@@ -181,7 +181,7 @@ def backtest_fixed_leverage(df, params):
     return net_pnl, win_rate, max_drawdown, equity_curve, trade_count, balance, order_log, trade_timestamps, total_fees, gross_pnl
 
 
-# **Enhanced Visualization with BTC Price and Improved Trade Markers**
+# **Enhanced Visualization with Coin Price and Trade Markers**
 def plot_equity_curve(equity_curve, trade_timestamps, df):
     fig, ax1 = plt.subplots(figsize=(12, 6))
 
@@ -269,5 +269,5 @@ if __name__ == "__main__":
     print("=" * 50)
     print("✅ Orders have been saved to 'LeverageOrder.txt'")
 
-    # Plot with BTC Price
+    # Plot with Coin Price
     plot_equity_curve(equity_curve, trade_timestamps, df)
