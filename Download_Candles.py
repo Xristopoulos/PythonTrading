@@ -17,7 +17,7 @@ def fetch_coin_data(symbol):
 
     exchange = ccxt.binance()
 
-    # Calculate the timestamp for 1 year ago (approximately 365 days)
+    # Calculate the timestamp for 1 year ago (365 days)
     one_year_ago = datetime.now() - timedelta(days=365)
     start_timestamp = int(one_year_ago.timestamp() * 1000)  # Convert to milliseconds
 
@@ -28,7 +28,7 @@ def fetch_coin_data(symbol):
     # Fetch the data in chunks using pagination
     limit = 1000  # Number of candles per request
     all_ohlcv = []
-    since = start_timestamp  # Start from 1 year ago
+    since = start_timestamp
 
     print(f"Downloading {symbol} data from 1 year ago to present...")
     while since < latest_timestamp:
@@ -36,7 +36,7 @@ def fetch_coin_data(symbol):
         if not ohlcv:
             break  # No more data available
         all_ohlcv.extend(ohlcv)
-        # Set 'since' to the timestamp of the last fetched candle plus one minute (in ms)
+
         since = ohlcv[-1][0] + 60 * 1000
         print(f"Downloaded {len(all_ohlcv)} candles for {symbol}...")
 
@@ -44,7 +44,7 @@ def fetch_coin_data(symbol):
     df = pd.DataFrame(all_ohlcv, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'])
     df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
 
-    # Calculate the percentage of candles downloaded over the 1-year period
+    # Calculate the percentage of candles downloaded over the specified period
     total_available_candles = (latest_timestamp - start_timestamp) // (60 * 1000)
     downloaded_candles = len(df)
     percentage_downloaded = (downloaded_candles / total_available_candles) * 100
